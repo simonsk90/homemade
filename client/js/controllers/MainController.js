@@ -2,7 +2,7 @@ angular.module('app').controller('mainController', ['$scope', '$http', function(
     
     var onTest = function (response) {
         console.log(response.data);
-        alert(response.data);
+        // alert(response.data);
         
     }
     $scope.abc = location;
