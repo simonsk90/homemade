@@ -1,107 +1,80 @@
 module.exports = function(grunt) {
 
+    var projectRootSrc = '/home/simon/WebstormProjects/homemade/';
+
+    require('load-grunt-tasks')(grunt);
+
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    
-    
-      watch: {
-          ts: {
-            files: ['/home/ubuntu/workspace/client/app/ts/*.ts'],
-            tasks: ['ts']
-          },
-            
-      },
-  
-      ts: {
-        dev: {
-              files: [{
-                    src: ["**/*.ts", "!node_modules/**"],
-                    dest: '/home/ubuntu/workspace/client/app/js'
-                  
-                }], 
-                          // The source typescript files, http://gruntjs.com/configuring-tasks#files
-                options: {
-                    watchTask: true,
-                    target: 'es5',
-                    module: 'commonjs',
-                    moduleResolution: 'node',
-                    sourceMap: true,
-                    emitDecoratorMetadata: true,
-                    experimentalDecorators: true,
-                    removeComments: false,
-                    noImplicitAny: false
-                }
-                
-            }
-      },
-    
-      browserSync: {
-        default_options: {
-            bsFiles: {
-                src : [
-                      '/home/ubuntu/workspace/*.html',
-                      '/home/ubuntu/workspace/client/styles/*.css',
-                      '/home/ubuntu/workspace/client/app/js/*.js',
-                ]
-            },
-            options: {
-                watchTask: true,
-                proxy: "localhost:8080",
-                port: 8080
-            }
-        }
-      },
-      
-      // uglify: {
-      //   options: {
-      //     banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      //   },
-      //   build: {
-      //     src: 'src/<%= pkg.name %>.js',
-      //     dest: 'build/<%= pkg.name %>.min.js'
-      //   },
-      // },
-      
-      
+
       uglify: {
         my_target: {
-          options: {
-            mangle: true
-          },
+            options: {
+                compress: {
+                    drop_console: true
+                }
+            },
           files: {
-            '/home/ubuntu/workspace/client/app/js//output.min.js': ['/home/ubuntu/workspace/client/app/js/main.js']
+              'client/app/output.min.js': ['client/app/**/*.js', '!client/app/output.min.js']
           }
         }
       },
-      
-    
+
       express: {
         dev: {
           options: {
-            script: '/home/ubuntu/workspace/server/Server.js'
+              script: 'server/Server.js'
+            // script: '/home/ubuntu/workspace/server/Server.js'
           }
         }
+      },
+
+      nodemon: {
+          dev: {
+              script: 'server/Server.js',
+
+              options: {
+                   nodeArgs: ['--debug=3009'],
+              }
+
+          }
+      },
+
+      jshint: {
+          all: ['Gruntfile.js', 'client/app/**/*.js', 'server/**/*.js', '!client/app/output.min.js']
+      },
+
+      exec: {
+          echo_something: 'lite-server',
+      },
+
+      concurrent: {
+          target: {
+              tasks: ['nodemon', 'exec'],
+              options: {
+                  logConcurrentOutput: true
+              }
+          }
       }
-    
-  
-  
+
   });
 
   // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-nodemon');
+    grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-concurrent');
+  
+    grunt.registerTask('ugl', ['uglify']);
+    grunt.registerTask('lint', ['jshint']);
+    grunt.registerTask('default', ['uglify', 'nodemon']);
+    grunt.registerTask('mon', ['nodemon']);
+    grunt.registerTask('exp', ['express']);
+    grunt.registerTask('dev', ['nodemon', 'exec']);
+    grunt.registerTask('exe', ['exec']);
 
-  // Default task(s).
-  // grunt.registerTask('default', ['browserSync', 'watch']);
-  
-  grunt.loadNpmTasks('grunt-express-server');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-browser-sync');
-  grunt.loadNpmTasks('grunt-ts');
-  
-  
-  
-  grunt.registerTask('default', ['express', 'ts', 'browserSync', 'watch']);
-  
-
+    grunt.registerTask('default', ['concurrent:target']);
 };
