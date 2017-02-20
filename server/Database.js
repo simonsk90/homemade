@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 
 module.exports = function () {
 
-    var hostname = "legolasdk-homemade-3586533:27017";
+    var hostname = "127.0.0.1:27017";
 
-    mongoose.connect('mongodb://' + hostname + '/bosse');
+    mongoose.connect('mongodb://' + hostname + '/test');
     
     var db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
@@ -14,4 +14,4 @@ module.exports = function () {
     });
     
     return db;
-}
+};
