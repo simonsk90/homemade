@@ -4,8 +4,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var http = require('http');
+var Promise = require("bluebird");
 var projectRootSrc = __dirname + '/../';
-var db = require('./Database.js')();
+var db = require('./Database.js')(Promise);
 
 var configure = function() {
     app.use(bodyParser.json());

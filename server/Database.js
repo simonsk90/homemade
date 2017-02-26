@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 
-module.exports = function () {
+module.exports = function (Promise) {
+
+    Promise.promisifyAll(mongoose);
 
     var hostname = "127.0.0.1:27017";
 

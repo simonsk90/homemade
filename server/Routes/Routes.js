@@ -2,7 +2,11 @@ var bcrypt = require('bcrypt');
 var path = require('path');
 // var projectRootSrc = __dirname + '/../../';
 
+
+
 module.exports = function (app, projectRootSrc, db) {
+
+
 
     app.get('/', function(req, res) {
         res.sendFile(path.join(projectRootSrc + 'client/app/index.html'));
@@ -13,11 +17,68 @@ module.exports = function (app, projectRootSrc, db) {
         res.send('Hello World234577!');
     });
 
+
+
+    app.get('/getUsers2', function (req, res) {
+
+        function findUsers(callback) {
+            db.collection('users').find().toArray(function(err, docs) {
+                callback(docs);
+            });
+        }
+
+
+        function sendResponse(result) {
+            res.send(result);
+        }
+
+        findUsers(sendResponse);
+
+
+    });
+
+    app.get('/getUsers', function (req, res) {
+        var result = [];
+
+        var findUsers = function(callback) {
+            var cursor = db.collection('users').find( );
+            cursor.each(function(err, doc) {
+                // assert.equal(err, null);
+                if (doc != null) {
+                    // console.dir(doc);
+                    result.push(doc);
+                } else {
+                    callback();
+                }
+            });
+        };
+
+        findUsers(function() {
+            res.send(result);
+        });
+
+    });
+
+
     app.post('/signup', function (req, res) {
         var userObject = req.body;
-        var kk = 223553322222;
-        var a = 25567888;
-        var ss = "sasa";
+        var existingUser;
+
+        function findExistingUser(cb) {
+            var users = db.collection('users').findOne({
+                "username" : userObject.username
+            }).then(function(item) {
+                if (!item) {
+                    cb(sendResponse);
+                }
+                else {
+                    console.log("FAIL - user exists already");
+                    res.send("FAIL - user exists already");
+                }
+            });
+        }
+
+        function insertUser(cbSendResponse) {
             bcrypt.genSalt(10, function(err, salt) {
                 if (err) {
                     return console.log('bcryptgensalt', err);
@@ -32,25 +93,45 @@ module.exports = function (app, projectRootSrc, db) {
                         'password': hash
                     };
 
-                    db.collection('userLogins').insert(newUser);
+                    db.collection('users').insert(newUser)
+                        .then(function() {
+                            cbSendResponse();
+                        });
 
-                    // MongoClient.connect(url, function(err, db) {
-                    //     assert.equal(null, err);
-                    //     insertDocument(db, function() {
-                    //         db.close();
-                    //     });
-                    // });
-
-
-                    // var users = db.collection('users').find();
-
-
-                    var haha = 123;
                 });
             });
+        }
+
+        function sendResponse(result) {
+            res.send(result);
+        }
+
+        // findExistingUser(insertUser);
+
+        // require('./../businessLogic/dbLogic/collections/users.js')(db);
+
+        var dbLogic = require('./../businessLogic/dbLogic/collections/users.js');
+
+        function getExistingUser(cb) {
+            dbLogic.findUser('Simon', db, cb);
+
+        }
+
+        function sendRes(result) {
+            res.send(result);
+        }
+
+        getExistingUser(sendRes);
 
 
-        res.send('yes23');
+
+
+
+
+
+
+
+        // res.send('yes23');
     });
 
     var insertDocument = function(db, callback, newUser) {

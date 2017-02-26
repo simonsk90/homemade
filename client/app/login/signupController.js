@@ -17,6 +17,8 @@ app.controller('signupController', ['$scope', '$http', function($scope, $http) {
         $http.post('/signup', newUserRequestObject)
             .then(function(response) {
                 console.log(response);
+            }, function(err) {
+                debugger;
             });
 
         // $http({
