@@ -24,15 +24,15 @@ module.exports = function(grunt) {
       express: {
         dev: {
           options: {
-              script: 'server/Server.js'
-            // script: '/home/ubuntu/workspace/server/Server.js'
+              script: 'server/server.js'
+            // script: '/home/ubuntu/workspace/server/server.js'
           }
         }
       },
 
       nodemon: {
           dev: {
-              script: 'server/Server.js',
+              script: 'server/server.js',
 
               options: {
                    nodeArgs: ['--debug=3009'],

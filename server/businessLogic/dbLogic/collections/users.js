@@ -1,35 +1,12 @@
-/**
- * Created by simon on 2/26/17.
- */
-
 module.exports = {
 
 
-    findUser : function (userName, db, cb) {
-
-        // var users = db.collection('users').findOne({
-        //     "username" : userName
-        // }).then(function(item) {
-        //     return item;
-        // });
-
-
-        // function getUser() {
-        //     var users = db.collection('users').findOne({
-        //         "username" : userName
-        //     }).then(function(item) {
-        //         returnResult(item);
-        //     });
-        // }
-        //
-        // function returnResult(result) {
-        //     return result;
-        // }
-        //
-        //
-        // return getUser();
-
-
+    /**
+     * @param {string} userName
+     * @param {mongoose.connection} db
+     * @param {function} cb
+     */
+    findByUserName : function (userName, db, cb) {
 
         db.collection('users').findOne({
             "username" : userName
@@ -37,7 +14,16 @@ module.exports = {
             cb(item);
         });
 
-    }
+    },
+
+    addUser : function (newUser, db, cb) {
+        db.collection('users').insert(newUser)
+            .then(function() {
+                cb();
+            });
+    },
+
+
 
 
 };

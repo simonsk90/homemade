@@ -20,17 +20,23 @@ app.controller('signupController', ['$scope', '$http', function($scope, $http) {
             }, function(err) {
                 debugger;
             });
+    };
 
-        // $http({
-        //     method: 'POST',
-        //     url:'/signup',
-        //     data: $scope.usernameWish,
-        //     // headers: {
-        //     //     'Content-Type': 'application/json'
-        //     // }
-        // })
+    $scope.authUser = function() {
+        var newUserRequestObject = {
+            username: $scope.usernameAuth,
+            password: $scope.passwordAuth
+        };
+
+        $http.post('/login', newUserRequestObject)
+            .then(function(response) {
+                console.log(response);
+            }, function(err) {
+                debugger;
+            });
 
     };
+
 
 
 }]);

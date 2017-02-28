@@ -6,18 +6,16 @@ var fs = require('fs');
 var http = require('http');
 var Promise = require("bluebird");
 var projectRootSrc = __dirname + '/../';
-var db = require('./Database.js')(Promise);
+var db = require('./database.js')(Promise);
 
 var configure = function() {
     app.use(bodyParser.json());
 };
 
-
-
 configure();
 
-require(projectRootSrc + 'server/Static.js')(app, express, projectRootSrc);
-require(projectRootSrc + 'server/Routes/Routes.js')(app, projectRootSrc, db);
+require(projectRootSrc + 'server/static.js')(app, express, projectRootSrc);
+require(projectRootSrc + 'server/routes/routes.js')(app, projectRootSrc, db);
 
 var server = app.listen(3000, function () {
   var host = server.address().address;
