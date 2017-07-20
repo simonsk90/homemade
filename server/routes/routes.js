@@ -1,6 +1,6 @@
 
 var path = require('path');
-
+var jwt = require('jsonwebtoken');
 var dbLogic = require('./../businessLogic/dbLogic/collections/users.js');
 // var createUserLogic = require('./../businessLogic/createUser.js');
 
@@ -18,9 +18,23 @@ module.exports = function (app, projectRootSrc, db) {
         res.sendFile(path.join(projectRootSrc + 'client/app/index.html'));
     });
 
-    app.get('/api/gettest', function (req, res) {
+    app.post('/api/gettest', function (req, res) {
+    	  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    	  var jwtSecret = process.env.jwtSecret;
+//    	  var token = jwt.sign({ foo: 'bar' }, 'shhhshgh');
+    	  
+    	  jwt.verify(token, jwtSecret, function(err, decoded) {      
+    	      if (err) {
+    	        return res.json({ success: false, message: 'Failed to authenticate token.' });    
+    	      } else {
+    	        // if everything is good, save to request for use in other routes
+    	        req.decoded = decoded;    
+    	        //next();
+    	      }
+    	    }); 
+    	
         console.log('gotit2345');
-        res.send('Hello World234577!');
+        //res.send('Hello World234577!');
     });
 
 

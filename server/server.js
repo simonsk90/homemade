@@ -7,6 +7,7 @@ var http = require('http');
 var Promise = require("bluebird");
 var projectRootSrc = __dirname + '/../';
 var db = require('./database.js')(Promise);
+var jwt = require('jsonwebtoken');
 
 var configure = function() {
     app.use(bodyParser.json());
@@ -22,7 +23,9 @@ var server = app.listen(3000, function () {
   var port = server.address().port;
   var addr = server.address();
 
-  console.log("Example app listening at http://%s:%s", process.env.PORT , host, port, addr);
+  process.env.jwtSecret = "wxf5QdgF49Pv2Nnnp3ymH7sDCPJcUfEIMwqRH7yFkAjckdLtXNDrB0jqD7Rebiu";
+
+  console.log("Example app listening at http://%s:%s", host, port, addr);
 });
 
 

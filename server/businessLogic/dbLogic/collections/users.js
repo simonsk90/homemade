@@ -15,7 +15,6 @@ module.exports = {
         });
 
     },
-
     addUser : function (newUser, db, cb) {
         db.collection('users').insert(newUser)
             .then(function() {
