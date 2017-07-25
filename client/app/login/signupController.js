@@ -14,7 +14,7 @@ app.controller('signupController', ['$scope', '$http', '$timeout', '$q', functio
             password: $scope.passwordWish
         };
 
-        $http.post('/signup', newUserRequestObject)
+        $http.post('/user', newUserRequestObject)
             .then(function(response) {
                 console.log(response);
             }, function(err) {

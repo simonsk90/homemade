@@ -1,11 +1,5 @@
 module.exports = {
 
-
-    /**
-     * @param {string} userName
-     * @param {mongoose.connection} db
-     * @param {function} cb
-     */
     findByUserName : function (userName, db, cb) {
 
         db.collection('users').findOne({
@@ -15,14 +9,22 @@ module.exports = {
         });
 
     },
+    
+    findAllUsers : function (db, cb) {
+        db.collection('users').find().toArray(function(err, items) {
+            if (err) {
+                cb(err);
+            } else {
+                cb(err, items);
+            }
+        });
+    },
+    
     addUser : function (newUser, db, cb) {
         db.collection('users').insert(newUser)
             .then(function() {
                 cb();
             });
     },
-
-
-
 
 };

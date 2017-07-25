@@ -18,7 +18,7 @@ configure();
 require(projectRootSrc + 'server/static.js')(app, express, projectRootSrc);
 require(projectRootSrc + 'server/routes/routes.js')(app, projectRootSrc, db);
 
-var server = app.listen(3000, function () {
+var server = app.listen(process.env.PORT, function () {
   var host = server.address().address;
   var port = server.address().port;
   var addr = server.address();

@@ -5,49 +5,21 @@ var jwt = require('jsonwebtoken');
 module.exports = function (app, projectRootSrc, dbLogic, db) {
 
 
-    app.get('/getUsers2', function (req, res) {
 
-        function findUsers(callback) {
-            db.collection('users').find().toArray(function(err, docs) {
-                callback(docs);
-            });
-        }
-
-        function sendResponse(result) {
-            res.send(result);
-        }
-
-        findUsers(sendResponse);
-    });
-
-    app.get('/getUsers', function (req, res) {
-        var result = [];
-
-        var findUsers = function(callback) {
-            var cursor = db.collection('users').find();
-            cursor.each(function(err, doc) {
-                // assert.equal(err, null);
-                if (doc !== null) {
-                    // console.dir(doc);
-                    result.push(doc);
-                    
-                } else {
-                    callback();
-                }
-            });
-        };
-
-        findUsers(function() {
-            res.send(result);
+    app.get('/users', function (req, res) {
+        dbLogic.findAllUsers(db, function(err, users) {
+            if (err) {
+                res.status(500).send('Error trying to get all users');
+            }
+            
+            res.send(users);
         });
-
     });
 
     app.post('/login', function (req, res) {
         var userObject = req.body;
 
         dbLogic.findByUserName(userObject.username, db, function(existingUser) {
-
             if (existingUser) {
 
                 authenticationLogic.comparePassword(userObject.password, existingUser.password, function(result) {
@@ -58,27 +30,20 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
                 		message: 'Enjoy your token!',
                 		token: token
                 	});
-                	
-                    //res.send(result);
                 });
-
-
 
             }
             else {
-                res.status(500);
+                res.status(401);
                 res.send("Not real user");
             }
-
         });
 
     });
 
-    app.post('/signup', function (req, res) {
+    app.post('/user', function (req, res) {
         var userObject = req.body;
 
-        var newUser = userModel.user(userObject.username);
-        
         dbLogic.findByUserName(userObject.username, db, function(existingUser) {
             if (!existingUser) {
                 authenticationLogic.generatePassword(userObject.password, function(hash) {
@@ -94,7 +59,7 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
                 });
             }
             else {
-                res.status(500);
+                res.status(409);
                 res.send("Fail - user already exists");
             }
         });

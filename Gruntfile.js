@@ -46,12 +46,13 @@ module.exports = function(grunt) {
       },
 
       exec: {
-          echo_something: 'lite-server',
+          liteserver: 'lite-server',
+          browserifyLibraries: 'browserify client/libraries/bundlingLibraries.js -o client/libraries/bundleLibraries.js'
       },
 
       concurrent: {
           target: {
-              tasks: ['nodemon', 'exec'],
+              tasks: ['nodemon', 'exec:liteserver'],
               options: {
                   logConcurrentOutput: true
               }
@@ -73,8 +74,9 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['uglify', 'nodemon']);
     grunt.registerTask('mon', ['nodemon']);
     grunt.registerTask('exp', ['express']);
-    grunt.registerTask('dev', ['nodemon', 'exec']);
-    grunt.registerTask('exe', ['exec']);
+    grunt.registerTask('dev', ['nodemon', 'exec:liteserver']);
+    grunt.registerTask('exe', ['exec:liteserver']);
+    grunt.registerTask('bundleLibraries', ['exec:browserifyLibraries']);
 
     grunt.registerTask('default', ['concurrent:target']);
 };
