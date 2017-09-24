@@ -1,6 +1,6 @@
 app.controller('homeController', ['$scope', function($scope) {
-    $scope.firstName= "Mullefar23444555777 er kun mullemors";
-    $scope.lastName= "for evigt36666222";
+    $scope.firstName= "Mullefar3344 er kun mullemors";
+    $scope.lastName= "for";
 
     var lol = 0;
 
@@ -13,7 +13,7 @@ app.controller('homeController', ['$scope', function($scope) {
 
         console.log("Jeg elsker mullemor23 " + lol);
 
-        lol = lol + 1;
+        lol = lol + 3;
     }
 
 

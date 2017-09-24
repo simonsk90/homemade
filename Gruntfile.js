@@ -35,7 +35,8 @@ module.exports = function(grunt) {
               script: 'server/server.js',
 
               options: {
-                   nodeArgs: ['--debug=3009'],
+                  // nodeArgs: ['--debug=3009'],
+                  nodeArgs: ['--inspect=15454'],
               }
 
           }
@@ -46,8 +47,13 @@ module.exports = function(grunt) {
       },
 
       exec: {
-          liteserver: 'lite-server',
-          browserifyLibraries: 'browserify client/libraries/bundlingLibraries.js -o client/libraries/bundleLibraries.js'
+          liteserver: 'lite-server -c bs-config.json',
+          browserifyLibraries: 'browserify client/libraries/bundlingLibraries.js -o client/libraries/bundleLibraries.js',
+          
+          // test: "nvm use default > /dev/null; node ${debug?--nocrankshaft --nolazy --nodead_code_elimination --debug-brk=15454} '$file' $args",
+          debug: "> /dev/null; node server/server.js {debug?--nocrankshaft --nolazy --nodead_code_elimination --debug-brk=15454} '$file' $args"
+          // debug: 'bash --login -c nvm use default > /dev/null; nodemon server/server.js debug? --nocrankshaft --nolazy --nodead_code_elimination --debug-brk=15454'
+
       },
 
       concurrent: {
@@ -56,8 +62,21 @@ module.exports = function(grunt) {
               options: {
                   logConcurrentOutput: true
               }
+          },
+          
+          debug: {
+              tasks: ['exec:debug', /*'exec:liteserver'*/],
+              options: {
+                  logConcurrentOutput: true
+              }
           }
-      }
+      },
+      
+      // nvm: {
+      //   test: {
+          
+      //   }
+      // }
 
   });
 
@@ -68,6 +87,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-concurrent');
+    grunt.loadNpmTasks('grunt-nvm');
   
     grunt.registerTask('ugl', ['uglify']);
     grunt.registerTask('lint', ['jshint']);
@@ -78,5 +98,17 @@ module.exports = function(grunt) {
     grunt.registerTask('exe', ['exec:liteserver']);
     grunt.registerTask('bundleLibraries', ['exec:browserifyLibraries']);
 
+    grunt.registerTask('debug', ['concurrent:debug']);
+
+
+    grunt.registerTask('abc', ['nvm:use:7.0.0', 'debug']);
+
+    grunt.registerTask('test', ['exec:test']);
+
+
     grunt.registerTask('default', ['concurrent:target']);
+    
+    
+
+    
 };

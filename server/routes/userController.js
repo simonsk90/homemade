@@ -1,9 +1,10 @@
 var authenticationLogic = require('./../businessLogic/authentication.js');
-var userModel = require('./../models/user.js');
 var jwt = require('jsonwebtoken');
+var mongoose = require('mongoose');
+var userDb = require('./../models/dbModels/userDbModel.js');
+
 
 module.exports = function (app, projectRootSrc, dbLogic, db) {
-
 
 
     app.get('/users', function (req, res) {
@@ -63,6 +64,50 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
                 res.send("Fail - user already exists");
             }
         });
+
+    });
+    
+    app.get('/users2', function(req, res) {
+        
+        // var userDbModel = require('./../models/dbModels/userDbModel')(mongoose);
+        
+        dbModels.find(function (err, users) {
+            if (err) return console.error(err);
+            // console.log(users);
+            
+            var tt = [];
+            
+            users.forEach(function(user) {
+               var bb = user.getName(); 
+               tt.push(bb);
+            });
+            
+            
+            res.send(tt);
+        });
+        
+            
+    });
+    
+    app.get('/users3', function(req, res) {
+       
+       
+       
+       var findUsersCallback = function() {
+           userDb.find({}, function(err, users) {
+          if (err) throw err;
+        
+          // object of all the users
+          console.log(users);
+          res.send(users);
+        });
+       };
+       
+       function findUsers(callback) {
+           callback();
+       }
+       
+       findUsers(findUsersCallback);
 
     });
 

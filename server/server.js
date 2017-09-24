@@ -9,6 +9,7 @@ var projectRootSrc = __dirname + '/../';
 var db = require('./database.js')(Promise);
 var jwt = require('jsonwebtoken');
 
+
 var configure = function() {
     app.use(bodyParser.json());
 };

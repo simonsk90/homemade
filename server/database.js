@@ -1,5 +1,4 @@
-var mongoose = require('mongoose');
-
+var mongoose = require("mongoose");
 module.exports = function (Promise) {
 
     var hostname = "127.0.0.1:27017",
