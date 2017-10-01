@@ -98,7 +98,7 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
           if (err) throw err;
         
           // object of all the users
-          console.log(users);
+          console.log(users + "abe2334445555");
           res.send(users);
         });
        };

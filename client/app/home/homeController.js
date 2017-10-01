@@ -1,5 +1,5 @@
-app.controller('homeController', ['$scope', function($scope) {
-    $scope.firstName= "Mullefar3344 er kun mullemors";
+app.controller('homeController', ['$scope', '$http', function($scope, $http) {
+    $scope.firstName= "Mullefar er kun mullemors";
     $scope.lastName= "for";
 
     var lol = 0;
@@ -16,7 +16,10 @@ app.controller('homeController', ['$scope', function($scope) {
         lol = lol + 3;
     }
 
-
+    $http.get('/users3')
+        .then(function(response) {
+            console.log(response.data);
+        });
 
 
 
