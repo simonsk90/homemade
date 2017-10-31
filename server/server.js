@@ -9,8 +9,8 @@ var projectRootSrc = __dirname + '/../';
 var db = require('./database.js')(Promise);
 var jwt = require('jsonwebtoken');
 
-
 var configure = function() {
+    process.env.projectRootSrc = projectRootSrc;
     app.use(bodyParser.json());
 };
 

@@ -1,3 +1,6 @@
+var dependencyFactory = require(process.env.projectRootSrc + 'server/dependencyFactory.js');
+var userDb = dependencyFactory.dbModelUsers();
+
 module.exports = {
 
     findByUserName : function (userName, db, cb) {
@@ -26,5 +29,14 @@ module.exports = {
                 cb();
             });
     },
+    
+    getAllUsers : function(cb) {
+        userDb.find({}, function(err, users) {
+            if (err) throw err;
+        
+            // object of all the users
+            cb(users);
+        });
+    }
 
 };

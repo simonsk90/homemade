@@ -1,8 +1,9 @@
 var authenticationLogic = require('./../businessLogic/authentication.js');
 var jwt = require('jsonwebtoken');
-var mongoose = require('mongoose');
-var userDb = require('./../models/dbModels/userDbModel.js');
-
+// var userDb = require('./../models/dbModels/userDbModel.js');
+// var dependencyFactory = require('./../dependencyFactory.js');
+var dependencyFactory = require(process.env.projectRootSrc + 'server/dependencyFactory.js');
+var collectionLogicUsers = dependencyFactory.collectionLogicUsers();
 
 module.exports = function (app, projectRootSrc, dbLogic, db) {
 
@@ -67,48 +68,32 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
 
     });
     
-    app.get('/users2', function(req, res) {
-        
-        // var userDbModel = require('./../models/dbModels/userDbModel')(mongoose);
-        
-        dbModels.find(function (err, users) {
-            if (err) return console.error(err);
-            // console.log(users);
+    app.get('/users3', function(req, res) {
+    //     var findUsersCallback = function() {
+    //         userDb.find({}, function(err, users) {
+    //             if (err) throw err;
             
-            var tt = [];
-            
-            users.forEach(function(user) {
-               var bb = user.getName(); 
-               tt.push(bb);
-            });
-            
-            
-            res.send(tt);
-        });
-        
-            
+    //             // object of all the users
+    //             console.log(users + "abe23344455552222");
+    //             res.send(users);
+    //         });
+    //   };
+       
+    // //   function findUsers(callback) {
+    // //       callback();
+    // //   }
+       
+    // //   findUsers(findUsersCallback);
+       
+    //   findUsersCallback();
+
     });
     
-    app.get('/users3', function(req, res) {
-       
-       
-       
-       var findUsersCallback = function() {
-           userDb.find({}, function(err, users) {
-          if (err) throw err;
-        
-          // object of all the users
-          console.log(users + "abe2334445555");
-          res.send(users);
+    
+    app.get('/users4', function(req, res) {
+        collectionLogicUsers.getAllUsers(function(users) {
+            res.send(users);
         });
-       };
-       
-       function findUsers(callback) {
-           callback();
-       }
-       
-       findUsers(findUsersCallback);
-
     });
 
 };
