@@ -35,8 +35,11 @@ module.exports = function(grunt) {
               script: 'server/server.js',
 
               options: {
+                  ignore: ['client/**'],
+                  delay: 2000,
+
                   // nodeArgs: ['--debug=3009'],
-                  nodeArgs: ['--inspect=15454'],
+                  // nodeArgs: ['--inspect=15454'],
               }
 
           }
@@ -47,18 +50,19 @@ module.exports = function(grunt) {
       },
 
       exec: {
-          liteserver: 'lite-server -c bs-config.json',
+          // liteserver: 'lite-server -c bs-config.json',
+          liteserver: 'npm run debugsync',
           browserifyLibraries: 'browserify client/libraries/bundlingLibraries.js -o client/libraries/bundleLibraries.js',
           
           // test: "nvm use default > /dev/null; node ${debug?--nocrankshaft --nolazy --nodead_code_elimination --debug-brk=15454} '$file' $args",
-          debug: "> /dev/null; node server/server.js {debug?--nocrankshaft --nolazy --nodead_code_elimination --debug-brk=15454} '$file' $args"
+          debug: "> /dev/null; node server/server.js {debug?--nocrankshaft --nolazy --nodead_code_elimination --debug-brk=3000} '$file' $args"
           // debug: 'bash --login -c nvm use default > /dev/null; nodemon server/server.js debug? --nocrankshaft --nolazy --nodead_code_elimination --debug-brk=15454'
 
       },
 
       concurrent: {
           target: {
-              tasks: ['nodemon', 'exec:liteserver'],
+              tasks: ['nodemon:dev', 'exec:liteserver'],
               options: {
                   logConcurrentOutput: true
               }
