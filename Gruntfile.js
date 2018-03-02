@@ -35,9 +35,9 @@ module.exports = function(grunt) {
               script: 'server/server.js',
 
               options: {
-                  ignore: ['client/**'],
+                  ignore: ['client/**/*'],
                   delay: 2000,
-
+                  nodeArgs: ['--inspect']
                   // nodeArgs: ['--debug=3009'],
                   // nodeArgs: ['--inspect=15454'],
               }

@@ -1,17 +1,17 @@
 app.controller('homeController', ['$scope', '$http', 'Calculator', function($scope, $http, Calculator) {
-    $scope.firstName= "Mullefar er kun mullemors123";
+    $scope.firstName= "bosse22";
     $scope.lastName= "for bbbsss";
 
     var lol = 3;
 
 
-    lol = lol + 9;
+    lol = lol + 923;
 
 
     while (lol < 20) {
 
 
-        console.log("Jeg elsker mullemor2345 " + lol);
+        console.log("Hejs22 " + lol);
 
         lol = lol + 2456612411111555;
     }
