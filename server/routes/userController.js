@@ -92,6 +92,7 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
     
     app.get('/users4', function(req, res) {
         collectionLogicUsers.getAllUsers(function(users) {
+            console.log('hej');
             res.send(users);
         });
     });
