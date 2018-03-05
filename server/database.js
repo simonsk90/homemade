@@ -1,10 +1,10 @@
 var mongoose = require("mongoose");
-module.exports = function (Promise) {
+module.exports = function () {
 
     var hostname = "127.0.0.1:27017",
         db;
     
-    Promise.promisifyAll(mongoose);
+    // Promise.promisifyAll(mongoose);
 
     mongoose.connect('mongodb://' + hostname + '/test');
     

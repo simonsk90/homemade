@@ -8,6 +8,6 @@ module.exports = {
     dbModelUsers: function() {
         var dbModelUsers = require("./models/dbModels/userDbModel.js");
         return dbModelUsers;
-    }
+    },
     
 };

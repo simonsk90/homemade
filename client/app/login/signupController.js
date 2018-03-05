@@ -32,6 +32,7 @@ app.controller('signupController', ['$scope', '$http', '$timeout', '$q', functio
             	$scope.token = response.data.token;
                 console.log(response);
             }, function(err) {
+                console.log(err);
             });
 
     };

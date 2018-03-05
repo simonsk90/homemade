@@ -1,5 +1,5 @@
 app.controller('homeController', ['$scope', '$http', 'Calculator', function($scope, $http, Calculator) {
-    $scope.firstName= "bosse22";
+    $scope.firstName= "bosse2";
     $scope.lastName= "for bbbsss";
 
     var lol = 3;

@@ -1,0 +1,12 @@
+{
+    "files": [
+        "client/app/libraries/angular/angular.js",
+        "client/app/libraries/angular-route/angular-route.js",
+
+        "client/app/**/*.js",
+        "!client/app/testBundle.js",
+        "!client/app/output.min.js"
+
+
+    ]
+}

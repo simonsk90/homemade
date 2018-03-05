@@ -2,16 +2,22 @@ var express = require('express');
 var app = express();
 
 var bodyParser = require('body-parser');
-var fs = require('fs');
-var http = require('http');
-var Promise = require("bluebird");
+// var fs = require('fs');
+// var http = require('http');
+// var Promise = require("bluebird");
 var projectRootSrc = __dirname + '/../';
-var db = require('./database.js')(Promise);
-var jwt = require('jsonwebtoken');
+var db = require('./database.js')();
+
+var webpack = require('webpack');
+
+// var jwt = require('jsonwebtoken');
+
 
 var configure = function() {
     process.env.projectRootSrc = projectRootSrc;
+    process.env.environment = "development";
     app.use(bodyParser.json());
+    app.set("view engine", "pug");
 };
 
 configure();

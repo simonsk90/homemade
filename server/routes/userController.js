@@ -21,19 +21,33 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
     app.post('/login', function (req, res) {
         var userObject = req.body;
 
-        dbLogic.findByUserName(userObject.username, db, function(existingUser) {
+        collectionLogicUsers.findByUserName(userObject.username, function(err, existingUser) {
+
+            if (err) {
+                res.status(500);
+                res.send("Error while finding user by username ", err.toString());
+            }
+
             if (existingUser) {
+                authenticationLogic.comparePassword(userObject.password, existingUser.password, function(err, result) {
+                	if (err) {
+                	    res.status(500);
+                	    res.send("Error during password verification ", err.toString());
+                    }
+                    if (result === true) {
+                        var token = jwt.sign({ foo: 'bar' }, process.env.jwtSecret);
 
-                authenticationLogic.comparePassword(userObject.password, existingUser.password, function(result) {
-                	var token = jwt.sign({ foo: 'bar' }, process.env.jwtSecret);
-                	
-                	res.json({
-                		success: true,
-                		message: 'Enjoy your token!',
-                		token: token
-                	});
+                        res.json({
+                            success: true,
+                            message: 'Enjoy your token!',
+                            token: token
+                        });
+                    }
+                    else {
+                	    res.status(401);
+                	    res.send("Incorrect password");
+                    }
                 });
-
             }
             else {
                 res.status(401);
@@ -46,7 +60,12 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
     app.post('/user', function (req, res) {
         var userObject = req.body;
 
-        dbLogic.findByUserName(userObject.username, db, function(existingUser) {
+        collectionLogicUsers.findByUserName(userObject.username, function(err, existingUser) {
+            if (err) {
+                res.status(500);
+                res.send("Error while finding user by username ", err.toString());
+            }
+
             if (!existingUser) {
                 authenticationLogic.generatePassword(userObject.password, function(hash) {
                     var newUser = {
@@ -54,10 +73,9 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
                         'password': hash
                     };
 
-                    dbLogic.addUser(newUser, db, function() {
+                    collectionLogicUsers.addUser(newUser, function() {
                         res.send('Success');
                     });
-
                 });
             }
             else {
@@ -67,32 +85,11 @@ module.exports = function (app, projectRootSrc, dbLogic, db) {
         });
 
     });
-    
-    app.get('/users3', function(req, res) {
-    //     var findUsersCallback = function() {
-    //         userDb.find({}, function(err, users) {
-    //             if (err) throw err;
-            
-    //             // object of all the users
-    //             console.log(users + "abe23344455552222");
-    //             res.send(users);
-    //         });
-    //   };
-       
-    // //   function findUsers(callback) {
-    // //       callback();
-    // //   }
-       
-    // //   findUsers(findUsersCallback);
-       
-    //   findUsersCallback();
 
-    });
-    
-    
+
     app.get('/users4', function(req, res) {
         collectionLogicUsers.getAllUsers(function(users) {
-            console.log('hej');
+            console.log('hej2');
             res.send(users);
         });
     });
