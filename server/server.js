@@ -15,7 +15,7 @@ var webpack = require('webpack');
 
 var configure = function() {
     process.env.projectRootSrc = projectRootSrc;
-    process.env.environment = "development";
+    process.env.environment = "test";
     app.use(bodyParser.json());
     app.set("view engine", "pug");
 };

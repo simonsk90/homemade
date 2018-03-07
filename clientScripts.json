@@ -1,0 +1,18 @@
+{
+    "scripts": [
+        "client/libraries/angular/angular.js",
+        "client/libraries/angular-route/angular-route.js",
+
+        "client/app/**/*.js",
+        "!client/app/testBundle.js",
+        "!client/app/output.min.js"
+
+
+    ],
+
+    "styles": [
+
+        "client/libraries/bootstrap/bootstrap.css",
+        "client/styles/common.css"
+    ]
+}

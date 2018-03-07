@@ -1,8 +1,9 @@
 module.exports = function(grunt) {
 
-    var projectRootSrc = '/home/simon/Desktop/homemade/';
+    // var projectRootSrc = '/home/simon/Desktop/homemade/';
+    var projectRootSrc = process.cwd();
     var fs = require("fs");
-    var contents = fs.readFileSync(projectRootSrc + "client/app/clientScripts.json");
+    var contents = fs.readFileSync(projectRootSrc + "/clientScripts.json");
 
     var jsonContent = JSON.parse(contents);
 
@@ -31,18 +32,32 @@ module.exports = function(grunt) {
             },
             files: {
 
-                'client/app/testBundle.js': jsonContent.files
-
-                // 'client/app/testBundle.js': [
-                //     'client/libraries/angular/angular.js',
-                //     'client/libraries/angular-route/angular-route.js',
-                //     'client/app/**/*.js',
-                //     '!client/app/testBundle.js',
-                //     '!client/app/output.min.js'
-                // ]
+                'client/liveTest/testBundle.js': jsonContent.scripts
             }
         }
 
+      },
+
+      cssmin: {
+          options: {
+              mergeIntoShorthands: false,
+              roundingPrecision: -1
+          },
+          all: {
+              files: {
+                  'client/liveTest/stylesBundle.css': jsonContent.styles
+              }
+          }
+      },
+
+
+      prodBundle: {
+          options: {
+              mangle: true
+          },
+        files: {
+            'client/prod/prodBundle.js': jsonContent.files
+        }
       },
 
       express: {
@@ -131,6 +146,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-nvm');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
   
     grunt.registerTask('ugl', ['uglify']);
     grunt.registerTask('lint', ['jshint']);
@@ -151,6 +167,7 @@ module.exports = function(grunt) {
     grunt.registerTask('startMongo', 'concurrent:startMongoDb');
 
     grunt.registerTask('bundleTest', 'uglify:testBundle');
+    grunt.registerTask('cssBundle', 'cssmin:all');
 
     grunt.registerTask('default', ['concurrent:target']);
     
